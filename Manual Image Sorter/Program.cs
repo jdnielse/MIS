@@ -15,7 +15,7 @@ namespace Manual_Image_Sorter
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Sorting());
         }
     }
 }

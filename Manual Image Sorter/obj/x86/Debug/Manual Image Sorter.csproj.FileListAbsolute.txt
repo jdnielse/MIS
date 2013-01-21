@@ -21,3 +21,17 @@ C:\Users\Jon\Desktop\eclipse\c4lender\trunk\Manual Image Sorter\Manual Image Sor
 C:\Users\Jon\Desktop\eclipse\c4lender\trunk\Manual Image Sorter\Manual Image Sorter\obj\x86\Debug\GenerateResource.write.1.tlog
 Q:\GitHub\MIS\Manual Image Sorter\obj\x86\Debug\Manual Image Sorter.exe
 Q:\GitHub\MIS\Manual Image Sorter\obj\x86\Debug\Manual Image Sorter.pdb
+Q:\GitHub\MIS\Manual Image Sorter\bin\Debug\Manual Image Sorter.exe
+Q:\GitHub\MIS\Manual Image Sorter\bin\Debug\Manual Image Sorter.pdb
+Q:\GitHub\MIS\Manual Image Sorter\bin\Debug\AForge.dll
+Q:\GitHub\MIS\Manual Image Sorter\bin\Debug\AForge.Imaging.dll
+Q:\GitHub\MIS\Manual Image Sorter\bin\Debug\AForge.Math.dll
+Q:\GitHub\MIS\Manual Image Sorter\bin\Debug\AForge.xml
+Q:\GitHub\MIS\Manual Image Sorter\bin\Debug\AForge.Imaging.xml
+Q:\GitHub\MIS\Manual Image Sorter\bin\Debug\AForge.Math.xml
+Q:\GitHub\MIS\Manual Image Sorter\obj\x86\Debug\ResolveAssemblyReference.cache
+Q:\GitHub\MIS\Manual Image Sorter\obj\x86\Debug\Manual_Image_Sorter.Sorting.resources
+Q:\GitHub\MIS\Manual Image Sorter\obj\x86\Debug\Manual_Image_Sorter.NewFolderDialog.resources
+Q:\GitHub\MIS\Manual Image Sorter\obj\x86\Debug\Manual_Image_Sorter.Properties.Resources.resources
+Q:\GitHub\MIS\Manual Image Sorter\obj\x86\Debug\GenerateResource.read.1.tlog
+Q:\GitHub\MIS\Manual Image Sorter\obj\x86\Debug\GenerateResource.write.1.tlog
