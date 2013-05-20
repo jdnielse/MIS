@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Sorting));
             this.imageDisplay = new System.Windows.Forms.PictureBox();
             this.folderList = new System.Windows.Forms.ListView();
             this.folderListMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -58,10 +59,12 @@
             this.butBack = new System.Windows.Forms.Button();
             this.hideButt = new System.Windows.Forms.Button();
             this.imageName = new System.Windows.Forms.TextBox();
+            this.flashView = new AxShockwaveFlashObjects.AxShockwaveFlash();
             ((System.ComponentModel.ISupportInitialize)(this.imageDisplay)).BeginInit();
             this.folderListMenu.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flashView)).BeginInit();
             this.SuspendLayout();
             // 
             // imageDisplay
@@ -210,14 +213,14 @@
             // openFolderToolStripMenuItem
             // 
             this.openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
-            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.openFolderToolStripMenuItem.Text = "Open Folder...";
             this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -351,12 +354,26 @@
             this.imageName.TabIndex = 0;
             this.imageName.Leave += new System.EventHandler(this.imageName_Leave);
             // 
+            // flashView
+            // 
+            this.flashView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.flashView.Enabled = true;
+            this.flashView.Location = new System.Drawing.Point(0, 27);
+            this.flashView.Name = "flashView";
+            this.flashView.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("flashView.OcxState")));
+            this.flashView.Size = new System.Drawing.Size(609, 378);
+            this.flashView.TabIndex = 10;
+            this.flashView.Visible = false;
+            // 
             // Sorting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(817, 457);
+            this.Controls.Add(this.flashView);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.folderList);
             this.Controls.Add(this.imageDisplay);
@@ -372,6 +389,7 @@
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flashView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -408,6 +426,7 @@
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
         private System.Windows.Forms.Button butBack;
         private System.Windows.Forms.ToolStripMenuItem singleClickMoveToolStripMenuItem;
+        private AxShockwaveFlashObjects.AxShockwaveFlash flashView;
     }
 }
 

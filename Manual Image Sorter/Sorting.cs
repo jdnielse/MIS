@@ -32,7 +32,7 @@ namespace Manual_Image_Sorter
 {
     public partial class Sorting : Form
     {
-        public static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPEG", ".JPE", ".BMP", ".GIF", ".PNG" };
+        public static readonly List<string> ImageExtensions = new List<string> { ".JPG", ".JPEG", ".JPE", ".BMP", ".GIF", ".PNG", ".SWF" };
         ArrayList files = new ArrayList();
         ArrayList skipped = new ArrayList();
         ArrayList folders = new ArrayList(); //stores the folders at the current folder
@@ -43,7 +43,7 @@ namespace Manual_Image_Sorter
         string currExtension; //the extension of the current file
         ArrayList custFolders = new ArrayList(); //stores the user custom folders
         bool singleClick = false;
-        int currIndex = 0;
+        int currIndex = -1;
         
 
         public Sorting()
@@ -89,13 +89,7 @@ namespace Manual_Image_Sorter
                 return;
             }
             //display the first image
-            currPath = files[0] as string;
-            if(currImage!=null) currImage.Dispose();
-            currImage = (Bitmap) System.Drawing.Image.FromFile(currPath);
-            imageDisplay.Image = currImage;
-            imageName.Text = getFileName(currPath);
-            this.Text = imageName.Text;
-            currExtension = getFileType(currPath);
+            nextImage();
 
             //setup the folder list
             refreshFolderList();
@@ -343,9 +337,22 @@ namespace Manual_Image_Sorter
             }
 
             currPath = files[currIndex] as string;
-            currImage.Dispose();
-            currImage = System.Drawing.Image.FromFile(currPath);
-            imageDisplay.Image = currImage;
+            if (getFileType(currPath) != ".swf")
+            {
+                flashView.Movie = "empty.swf"; //easiest way to stop the last flash from playing
+                flashView.Visible = false;
+                imageDisplay.Visible = true;
+                if(currImage != null) currImage.Dispose();
+                currImage = System.Drawing.Image.FromFile(currPath);
+                imageDisplay.Image = currImage;
+            }
+            else
+            {
+                flashView.Visible = true;
+                imageDisplay.Visible = false;
+                flashView.Movie = currPath;
+            }
+
             imageName.Text = getFileName(currPath);
             this.Text = imageName.Text;
             currExtension = getFileType(currPath);
@@ -361,14 +368,26 @@ namespace Manual_Image_Sorter
             catch(ArgumentOutOfRangeException e)
             {
                 //there are no images before the current one - try from the end
-                currIndex = files.Count - 1;
+                currIndex = files.Count;
                 while (files[--currIndex] == null) ; //this will always work since we will eventually get back to the only image remaining
             }
 
             currPath = files[currIndex] as string;
-            currImage.Dispose();
-            currImage = System.Drawing.Image.FromFile(currPath);
-            imageDisplay.Image = currImage;
+            if (getFileType(currPath) != ".swf")
+            {
+                flashView.Movie = "empty.swf"; //easiest way to stop the last flash from playing
+                flashView.Visible = false;
+                imageDisplay.Visible = true;
+                if (currImage != null) currImage.Dispose();
+                currImage = System.Drawing.Image.FromFile(currPath);
+                imageDisplay.Image = currImage;
+            }
+            else
+            {
+                flashView.Visible = true;
+                imageDisplay.Visible = false;
+                flashView.Movie = currPath;
+            }
             imageName.Text = getFileName(currPath);
             this.Text = imageName.Text;
             currExtension = getFileType(currPath);
