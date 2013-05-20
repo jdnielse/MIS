@@ -4,14 +4,10 @@
  * 
  * 
  * TODO:
- *  BIG:
- *      duplicate detection
  *      
  *  SMALL:
  *      different sort orders
- *      back button - opposite skip button
  *      undo button - for delete and folder move
- *      .. in folder selection window to move images up a folder
  *      key bindings:
  *          space - skip
  *          assignable buttons for each folder or just label each folder as a key?
@@ -45,8 +41,9 @@ namespace Manual_Image_Sorter
         string basePath; //the folder being viewed
         StreamWriter sw; 
         string currExtension; //the extension of the current file
-        Dictionary<int, string> dupebase = new Dictionary<int, string>(); //stores all image data
-        Dictionary<string, string> dupes = new Dictionary<string, string>(); //stores pairs of duplicates
+        ArrayList custFolders = new ArrayList(); //stores the user custom folders
+        bool singleClick = false;
+        int currIndex = 0;
         
 
         public Sorting()
@@ -58,30 +55,27 @@ namespace Manual_Image_Sorter
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog fbd = new FolderBrowserDialog();
+            if (basePath != null) fbd.SelectedPath = basePath;
             DialogResult result = fbd.ShowDialog();
             if (result == DialogResult.Cancel) return;
 
             string[] f = Directory.GetFiles(fbd.SelectedPath);
-            //Console.WriteLine("Files found: " + f.Length.ToString());
             string[] fold = Directory.GetDirectories(fbd.SelectedPath);
             
             if (fold.Length <= 0)
             {
                 MessageBox.Show(this, "The selected folder has no subfolders in it");
-                //Console.WriteLine("Found no folders");
             }
 
             folders.Clear();
             foreach (string s in fold)
             {
-                //Console.WriteLine(s);
                 folders.Add(s);
             }
 
             files.Clear();
             foreach (string s in f)
             {
-                //Console.WriteLine(s);
                 //determine if file is an image
                 if (ImageExtensions.Contains(Path.GetExtension(s).ToUpperInvariant()))
                 {
@@ -92,9 +86,7 @@ namespace Manual_Image_Sorter
             if (files.Count <= 0)
             {
                 MessageBox.Show(this, "The selected folder has no images in it");
-                //Console.WriteLine("found no files");
                 return;
-                //die
             }
             //display the first image
             currPath = files[0] as string;
@@ -108,12 +100,11 @@ namespace Manual_Image_Sorter
             //setup the folder list
             refreshFolderList();
 
-            //Console.WriteLine(basePath);
             //enable create folder
             enableButts();
 
-            //Save to BasePath
-            //sw = new StreamWriter(basePath+"\\"+"text.txt");
+            //reset custFolders
+            custFolders.Clear();
             
 
         }
@@ -121,7 +112,6 @@ namespace Manual_Image_Sorter
         //helper method that reads all current folders
         private void refreshFolderList()
         {
-            //Console.WriteLine("ASFDASFDASFDASFD");
             folderList.Items.Clear();
             folderList.Clear();
             
@@ -129,6 +119,7 @@ namespace Manual_Image_Sorter
             folderList.Columns.Add("Folder");
             folderList.Columns[0].Width = this.folderList.Width - 4;
             folderList.HeaderStyle = ColumnHeaderStyle.None;
+            folderList.Items.Add(".."); //add the parent folder
             foreach (string s in folders)
             {
                 folderList.Items.Add(getFileName(s));
@@ -145,6 +136,7 @@ namespace Manual_Image_Sorter
             deleteButton.Enabled = true;
             button5.Enabled = true;
             hideButt.Enabled = true;
+            butBack.Enabled = true;
         }
 
         public void disableButts()
@@ -155,6 +147,7 @@ namespace Manual_Image_Sorter
             deleteButton.Enabled = false;
             button5.Enabled = false;
             hideButt.Enabled = false;
+            butBack.Enabled = false;
             
         }
 
@@ -278,7 +271,6 @@ namespace Manual_Image_Sorter
                 string[] fold = Directory.GetDirectories(basePath);
                 foreach (string s in fold)
                 {
-                    //Console.WriteLine(s);
                     folders.Add(s);
                 }
                 refreshFolderList();
@@ -294,7 +286,7 @@ namespace Manual_Image_Sorter
                 MessageBox.Show(this, "Select a folder");
                 return;
             }
-            string newPath = (basePath.ToString() + "\\" + folderList.SelectedItems[0].Text + "\\" + getFileName(currPath));
+            string newPath = (basePath.ToString() + "\\" + folderList.SelectedItems[0].Text + "\\" + getFileName(currPath)); //this works for .. too
 
             // Ensure that the target does not exist. 
             if (File.Exists(newPath))
@@ -306,54 +298,128 @@ namespace Manual_Image_Sorter
             //move the file
             imageDisplay.Image = null;
             currImage.Dispose();
-            //Console.WriteLine("OldPath " + currPath + " newPath " + newPath);
             File.Move(currPath, newPath);
-            //Console.WriteLine("Moved " + getFileName(currPath) + " from " + currPath + " to " + newPath);
-            //sw.WriteLine("Moved " + tail + " from " + currPath + " to " + newPath);
+            files[currIndex] = null; //set the current index to null so we know the image does't exist
             nextImage();
             
         }
 
+        private void folderList_Click(object sender, EventArgs e)
+        {
+            if (singleClick)
+            {
+                folderList_DoubleClick(sender, e);
+            }
+        }
+
         public void nextImage()
         {
-            files.RemoveAt(0);
-            if (files.Count <= 0)
+            try
             {
-                if (skipped.Count <= 0)
+                while (files[++currIndex] == null) ; //go back past nonexistant ones
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                //there are no images before the current one - try from the end
+                currIndex = 0;
+                try
                 {
-
+                    while (files[++currIndex] == null) ; //this will always work since we will eventually get back to the only image remaining
+                }
+                catch (ArgumentOutOfRangeException ex)
+                {
                     //say end of images
                     folderList.Items.Clear();
                     folderList.Clear();
                     imageDisplay.Image = null;
                     disableButts();
-                    // sw.Close();
                     imageName.Text = "";
                     currPath = "";
+                    currIndex = 0;
                     this.Text = "Manual Image Sorter";
                     MessageBox.Show("No images left in folder");
                     return;
                 }
-                else
-                {
-
-                    MessageBox.Show("Ran through all images in folder, displaying remaining images");
-                    foreach (string s in skipped)
-                    {
-                        files.Add(s);
-                    }
-                    skipped.Clear();
-                }
             }
+
+            currPath = files[currIndex] as string;
+            currImage.Dispose();
+            currImage = System.Drawing.Image.FromFile(currPath);
+            imageDisplay.Image = currImage;
+            imageName.Text = getFileName(currPath);
+            this.Text = imageName.Text;
+            currExtension = getFileType(currPath);
+
+        }
+
+        public void lastImage()
+        {
+            try
+            {
+                while (files[--currIndex] == null) ; //go back past nonexistant ones
+            } 
+            catch(ArgumentOutOfRangeException e)
+            {
+                //there are no images before the current one - try from the end
+                currIndex = files.Count - 1;
+                while (files[--currIndex] == null) ; //this will always work since we will eventually get back to the only image remaining
+            }
+
+            currPath = files[currIndex] as string;
+            currImage.Dispose();
+            currImage = System.Drawing.Image.FromFile(currPath);
+            imageDisplay.Image = currImage;
+            imageName.Text = getFileName(currPath);
+            this.Text = imageName.Text;
+            currExtension = getFileType(currPath);
+
+        }
+
+        //public void nextImage()
+        //{
+        //    files.RemoveAt(0);
+        //    if (files.Count <= 0)
+        //    {
+        //        if (skipped.Count <= 0)
+        //        {
+
+        //            //say end of images
+        //            folderList.Items.Clear();
+        //            folderList.Clear();
+        //            imageDisplay.Image = null;
+        //            disableButts();
+        //            // sw.Close();
+        //            imageName.Text = "";
+        //            currPath = "";
+        //            this.Text = "Manual Image Sorter";
+        //            MessageBox.Show("No images left in folder");
+        //            return;
+        //        }
+        //        else
+        //        {
+
+        //            MessageBox.Show("Ran through all images in folder, displaying remaining images");
+        //            foreach (string s in skipped)
+        //            {
+        //                files.Add(s);
+        //            }
+        //            skipped.Clear();
+        //        }
+        //    }
                 
-                currPath = files[0] as string;
-                currImage.Dispose();
-                currImage = System.Drawing.Image.FromFile(currPath);
-                imageDisplay.Image = currImage;
-                imageName.Text = getFileName(currPath);
-                this.Text = imageName.Text;
-                currExtension = getFileType(currPath);
+        //        currPath = files[0] as string;
+        //        currImage.Dispose();
+        //        currImage = System.Drawing.Image.FromFile(currPath);
+        //        imageDisplay.Image = currImage;
+        //        imageName.Text = getFileName(currPath);
+        //        this.Text = imageName.Text;
+        //        currExtension = getFileType(currPath);
             
+        //}
+
+        private void butBack_Click(object sender, EventArgs e)
+        {
+            lastImage();
         }
 
 
@@ -386,8 +452,7 @@ namespace Manual_Image_Sorter
 
             currImage = System.Drawing.Image.FromFile(currPath);
             imageDisplay.Image = currImage;
-            this.Text = imageName.Text;
-            //imageName.Text = getFileName(currPath);            
+            this.Text = imageName.Text;         
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -400,7 +465,6 @@ namespace Manual_Image_Sorter
         {
             if (folderList.SelectedItems.Count <= 0)
             {
-                //message box 
                 MessageBox.Show(this, "Select a folder to hide");
                 return;
             }
@@ -447,20 +511,40 @@ namespace Manual_Image_Sorter
             MessageBox.Show("This program is meant to make sorting through large numbers of images faster than faster than doing the same task in Windows Explorer.\nFirst, you need a folder full of images. Then use the \"Open Folder\" menu to select that folder.\nThe first image in that folder will then be displayed. Simply double click any subfolder in the list to the right to move that image to that folder and move onto the next image.\nYou can create new subfolders from within the program with the \"Create Folder\" button.\nYou can hide folders that you do not want to sort into by selecting a folder then right clicking and selecting \"Hide folder\" or by clicking the hide folder button.");
         }
 
-        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        //turn on single click move mode
+        private void singleClickMoveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            singleClick = !singleClick;
+            singleClickMoveToolStripMenuItem.Checked = singleClick;
         }
 
-        /**
-         * checks if the current image is a duplicate
-         * adds current image to a hashmap of <filename, hash of histogram data>
-         * 
-         */
-        public void checkIfDupe()
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            
-            //currImage.GetThumbnailImage to resize
+            switch (keyData)
+            {
+                case Keys.Q:
+                    lastImage();
+                    return true;
+                case Keys.Space:
+                    nextImage();
+                    return true;
+                case Keys.E:
+                    nextImage();
+                    return true;
+                case Keys.NumPad0:
+                    lastImage();
+                    return true;
+                case Keys.Add:
+                    nextImage();
+                    return true;
+                default:
+                    return base.ProcessCmdKey(ref msg, keyData);
+            }
         }
+
+
+
+
+
     }
 }

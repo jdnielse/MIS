@@ -45,6 +45,7 @@
             this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.singleClickMoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.singleClickDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderFontSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripFont8 = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,6 +55,7 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.butBack = new System.Windows.Forms.Button();
             this.hideButt = new System.Windows.Forms.Button();
             this.imageName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.imageDisplay)).BeginInit();
@@ -68,9 +70,9 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.imageDisplay.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.imageDisplay.Location = new System.Drawing.Point(12, 27);
+            this.imageDisplay.Location = new System.Drawing.Point(0, 27);
             this.imageDisplay.Name = "imageDisplay";
-            this.imageDisplay.Size = new System.Drawing.Size(590, 378);
+            this.imageDisplay.Size = new System.Drawing.Size(609, 378);
             this.imageDisplay.TabIndex = 0;
             this.imageDisplay.TabStop = false;
             // 
@@ -80,16 +82,18 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.folderList.ContextMenuStrip = this.folderListMenu;
             this.folderList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.folderList.FullRowSelect = true;
             this.folderList.HideSelection = false;
             this.folderList.Location = new System.Drawing.Point(608, 27);
             this.folderList.MultiSelect = false;
             this.folderList.Name = "folderList";
             this.folderList.Size = new System.Drawing.Size(197, 378);
-            this.folderList.TabIndex = 1;
+            this.folderList.TabIndex = 7;
+            this.folderList.TabStop = false;
             this.folderList.UseCompatibleStateImageBehavior = false;
             this.folderList.View = System.Windows.Forms.View.Details;
+            this.folderList.Click += new System.EventHandler(this.folderList_Click);
             this.folderList.DoubleClick += new System.EventHandler(this.folderList_DoubleClick);
-            this.folderList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             // 
             // folderListMenu
             // 
@@ -123,24 +127,24 @@
             // 
             // button1
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.Enabled = false;
-            this.button1.Location = new System.Drawing.Point(174, 11);
+            this.button1.Location = new System.Drawing.Point(487, 11);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
+            this.button1.TabIndex = 3;
             this.button1.Text = "M&ove...";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(12, 11);
+            this.button2.Location = new System.Drawing.Point(325, 11);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
+            this.button2.TabIndex = 1;
             this.button2.Text = "&New folder";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -160,25 +164,25 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.deleteButton.Enabled = false;
-            this.deleteButton.Location = new System.Drawing.Point(336, 11);
+            this.deleteButton.Location = new System.Drawing.Point(568, 11);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
-            this.deleteButton.TabIndex = 5;
+            this.deleteButton.TabIndex = 4;
             this.deleteButton.Text = "D&elete";
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button5.Enabled = false;
-            this.button5.Location = new System.Drawing.Point(255, 11);
+            this.button5.Location = new System.Drawing.Point(730, 11);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "S&kip";
+            this.button5.TabIndex = 6;
+            this.button5.Text = "Next ->";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
@@ -206,25 +210,33 @@
             // openFolderToolStripMenuItem
             // 
             this.openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
-            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openFolderToolStripMenuItem.Text = "Open Folder...";
             this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.singleClickMoveToolStripMenuItem,
             this.singleClickDeleteToolStripMenuItem,
             this.folderFontSizeToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
+            // 
+            // singleClickMoveToolStripMenuItem
+            // 
+            this.singleClickMoveToolStripMenuItem.Name = "singleClickMoveToolStripMenuItem";
+            this.singleClickMoveToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.singleClickMoveToolStripMenuItem.Text = "Single Click Move";
+            this.singleClickMoveToolStripMenuItem.Click += new System.EventHandler(this.singleClickMoveToolStripMenuItem_Click);
             // 
             // singleClickDeleteToolStripMenuItem
             // 
@@ -292,6 +304,7 @@
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.SystemColors.Menu;
+            this.panel1.Controls.Add(this.butBack);
             this.panel1.Controls.Add(this.hideButt);
             this.panel1.Controls.Add(this.imageName);
             this.panel1.Controls.Add(this.deleteButton);
@@ -303,13 +316,27 @@
             this.panel1.Size = new System.Drawing.Size(817, 46);
             this.panel1.TabIndex = 9;
             // 
+            // butBack
+            // 
+            this.butBack.AllowDrop = true;
+            this.butBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.butBack.Enabled = false;
+            this.butBack.Location = new System.Drawing.Point(649, 11);
+            this.butBack.Name = "butBack";
+            this.butBack.Size = new System.Drawing.Size(75, 23);
+            this.butBack.TabIndex = 5;
+            this.butBack.Text = "<- Back";
+            this.butBack.UseVisualStyleBackColor = true;
+            this.butBack.Click += new System.EventHandler(this.butBack_Click);
+            // 
             // hideButt
             // 
+            this.hideButt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.hideButt.Enabled = false;
-            this.hideButt.Location = new System.Drawing.Point(93, 11);
+            this.hideButt.Location = new System.Drawing.Point(406, 11);
             this.hideButt.Name = "hideButt";
             this.hideButt.Size = new System.Drawing.Size(75, 23);
-            this.hideButt.TabIndex = 11;
+            this.hideButt.TabIndex = 2;
             this.hideButt.Text = "Hide Folder";
             this.hideButt.UseVisualStyleBackColor = true;
             this.hideButt.Click += new System.EventHandler(this.hideButt_Click);
@@ -318,13 +345,13 @@
             // 
             this.imageName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.imageName.Location = new System.Drawing.Point(417, 11);
+            this.imageName.Location = new System.Drawing.Point(12, 14);
             this.imageName.Name = "imageName";
-            this.imageName.Size = new System.Drawing.Size(388, 20);
-            this.imageName.TabIndex = 10;
+            this.imageName.Size = new System.Drawing.Size(307, 20);
+            this.imageName.TabIndex = 0;
             this.imageName.Leave += new System.EventHandler(this.imageName_Leave);
             // 
-            // Form1
+            // Sorting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -335,8 +362,9 @@
             this.Controls.Add(this.imageDisplay);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.button3);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
+            this.Name = "Sorting";
             this.Text = "Manual Image Sorter";
             ((System.ComponentModel.ISupportInitialize)(this.imageDisplay)).EndInit();
             this.folderListMenu.ResumeLayout(false);
@@ -378,6 +406,8 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripFont14;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem1;
+        private System.Windows.Forms.Button butBack;
+        private System.Windows.Forms.ToolStripMenuItem singleClickMoveToolStripMenuItem;
     }
 }
 
